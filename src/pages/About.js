@@ -158,8 +158,8 @@ const TeamImage = styled.div`
 `;
 
 function About() {
-  const [introRef, introInView] = useInView({ triggerOnce: true, threshold: 0.1 });
-  const [teamRef, teamInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [introRef] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [teamRef] = useInView({ triggerOnce: true, threshold: 0.1 });
 
   return (
     <AboutContainer>
@@ -170,7 +170,7 @@ function About() {
         </p>
       </HeroSection>
 
-      <IntroSection ref={introRef}>
+      <IntroSection>
         <IntroContent>
           <h2 style={{ fontSize: '2.5rem', marginBottom: '30px', color: '#1d3557' }}>
             Family Owned & Operated
@@ -201,7 +201,7 @@ function About() {
         </ValueGrid>
       </IntroSection>
 
-      <TeamSection ref={teamRef}>
+      <TeamSection>
         <h2 style={{ textAlign: 'center', fontSize: '2.5rem', marginBottom: '40px' }}>
           Meet Our Leadership
         </h2>
