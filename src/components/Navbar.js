@@ -43,9 +43,18 @@ const LogoImage = styled.img`
   height: auto; /* Maintain aspect ratio */
 `;
 
-const NavItems = styled.div`
+const NavMenu = styled.div`
   display: flex;
   align-items: center;
+  gap: 2rem; // Add consistent gap between items
+  
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const NavItem = styled.li`
+  list-style: none;
 `;
 
 const NavLinkStyled = styled(NavLink)`
@@ -91,12 +100,11 @@ const PhoneNumber = styled.a`
 const Navbar = () => {
   const scrollToContact = (e) => {
     e.preventDefault();
-    const contactSection = document.getElementById('contact');
+    const contactSection = document.getElementById('contact-form');
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth' });
     } else {
-      // If we're not on the home page, go to home page first then scroll
-      window.location.href = '/#contact';
+      window.location.href = '/#contact-form';
     }
   };
 
@@ -106,14 +114,26 @@ const Navbar = () => {
         <Logo to="/">
           <LogoImage src={logo} alt="X-treme Services Logo" />
         </Logo>
-        <NavItems>
-          <NavLinkStyled to="/about">About</NavLinkStyled>
-          <NavLinkStyled to="/services">Services</NavLinkStyled>
-          <NavLinkStyled to="/projects">Projects</NavLinkStyled>
-          <NavLinkStyled to="/news">News</NavLinkStyled>
-          <NavLinkStyled as="a" href="#contact" onClick={scrollToContact}>Contact</NavLinkStyled>
-          <PhoneNumber href="tel:3368510050">Call Us: (336) 851-0050</PhoneNumber>
-        </NavItems>
+        <NavMenu>
+          <NavItem>
+            <NavLinkStyled to="/about">About</NavLinkStyled>
+          </NavItem>
+          <NavItem>
+            <NavLinkStyled to="/services">Services</NavLinkStyled>
+          </NavItem>
+          <NavItem>
+            <NavLinkStyled to="/projects">Projects</NavLinkStyled>
+          </NavItem>
+          <NavItem>
+            <NavLinkStyled to="/news">News</NavLinkStyled>
+          </NavItem>
+          <NavItem>
+            <NavLinkStyled as="a" href="#contact-form" onClick={scrollToContact}>Contact</NavLinkStyled>
+          </NavItem>
+          <NavItem>
+            <PhoneNumber href="tel:3368510050">Call Us: (336) 851-0050</PhoneNumber>
+          </NavItem>
+        </NavMenu>
       </NavContainer>
     </Nav>
   );

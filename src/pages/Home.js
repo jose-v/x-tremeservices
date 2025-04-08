@@ -1022,7 +1022,7 @@ function Home() {
         </StaffContainer>
       </StaffSection>
 
-      <Section id="contact">
+      <Section id="contact-form">
         {/* Contact form content */}
       </Section>
     </HomeContainer>
