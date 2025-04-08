@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useInView } from 'react-intersection-observer';
 import { 
   FaUsers, 
   FaHandshake, 
@@ -158,9 +157,6 @@ const TeamImage = styled.div`
 `;
 
 function About() {
-  const [introRef] = useInView({ triggerOnce: true, threshold: 0.1 });
-  const [teamRef] = useInView({ triggerOnce: true, threshold: 0.1 });
-
   return (
     <AboutContainer>
       <HeroSection>
