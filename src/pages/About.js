@@ -11,7 +11,7 @@ import {
 } from 'react-icons/fa';
 
 // Import your background images
-import aboutBg from '../images/about-hero.jpg';
+// import aboutBg from '../images/about-hero.jpg';
 
 const AboutContainer = styled.div`
   width: 100%;
@@ -38,9 +38,7 @@ const HeroSection = styled.section`
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(rgba(29, 53, 87, 0.8), rgba(29, 53, 87, 0.8)),
-                url(${aboutBg}) no-repeat center center;
-    background-size: cover;
+    background: linear-gradient(rgba(29, 53, 87, 0.9), rgba(29, 53, 87, 0.9));
     z-index: -1;
   }
 `;
