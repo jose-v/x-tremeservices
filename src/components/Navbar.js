@@ -96,12 +96,11 @@ function Navbar() {
           <LogoImage src={logo} alt="X-treme Services Logo" />
         </Logo>
         <NavItems>
-          {/* Removed the Home link as requested */}
           <NavLinkStyled to="/about">About</NavLinkStyled>
           <NavLinkStyled to="/services">Services</NavLinkStyled>
           <NavLinkStyled to="/projects">Projects</NavLinkStyled>
           <NavLinkStyled to="/news">News</NavLinkStyled>
-          <NavLinkStyled to="/contact">Contact</NavLinkStyled>
+          <NavLinkStyled to="/#contact">Contact</NavLinkStyled>
           <PhoneNumber href="tel:3368510050">Call Us: (336) 851-0050</PhoneNumber>
         </NavItems>
       </NavContainer>

@@ -114,16 +114,24 @@ const ContactDivider = styled.hr`
   width: 80%;
 `;
 
+const FooterLinks = styled.div`
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+`;
+
 function Footer() {
   return (
     <FooterContainer>
       <FooterContent>
         <FooterSection>
           <FooterHeading>Quick Links</FooterHeading>
-          <FooterLink to="/">Home</FooterLink>
-          <FooterLink to="/about">About</FooterLink>
-          <FooterLink to="/services">Services</FooterLink>
-          <FooterLink to="/projects">Projects</FooterLink>
+          <FooterLinks>
+            <FooterLink to="/">Home</FooterLink>
+            <FooterLink to="/services">Services</FooterLink>
+            <FooterLink to="/about">About</FooterLink>
+            <FooterLink to="/#contact">Contact</FooterLink>
+          </FooterLinks>
           <SocialIconsContainer>
             <SocialIcon href="https://facebook.com" target="_blank" rel="noopener noreferrer">
               <FaFacebookF />

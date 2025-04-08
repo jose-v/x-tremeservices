@@ -1021,6 +1021,10 @@ function Home() {
           </StaffGrid>
         </StaffContainer>
       </StaffSection>
+
+      <Section id="contact">
+        {/* Contact form content */}
+      </Section>
     </HomeContainer>
   );
 }
