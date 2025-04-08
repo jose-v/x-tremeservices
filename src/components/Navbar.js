@@ -88,7 +88,18 @@ const PhoneNumber = styled.a`
   }
 `;
 
-function Navbar() {
+const Navbar = () => {
+  const scrollToContact = (e) => {
+    e.preventDefault();
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // If we're not on the home page, go to home page first then scroll
+      window.location.href = '/#contact';
+    }
+  };
+
   return (
     <Nav>
       <NavContainer>
@@ -100,13 +111,13 @@ function Navbar() {
           <NavLinkStyled to="/services">Services</NavLinkStyled>
           <NavLinkStyled to="/projects">Projects</NavLinkStyled>
           <NavLinkStyled to="/news">News</NavLinkStyled>
-          <NavLinkStyled to="/#contact">Contact</NavLinkStyled>
+          <NavLinkStyled as="a" href="#contact" onClick={scrollToContact}>Contact</NavLinkStyled>
           <PhoneNumber href="tel:3368510050">Call Us: (336) 851-0050</PhoneNumber>
         </NavItems>
       </NavContainer>
     </Nav>
   );
-}
+};
 
 export default Navbar;
 
