@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useInView } from 'react-intersection-observer';
+import { useNavigate } from 'react-router-dom';
 import { 
   FaBolt, 
   FaSnowflake, 
@@ -25,6 +26,7 @@ import lsdImg from '../images/lsd_services.jpg';
 import landscapeMain from '../images/landscape-main.jpg';
 import landscapePath from '../images/landscape-path.jpg';
 import landscapeSteps from '../images/landscape-steps.jpg';
+import servicesHeroBanner from '../images/services_hero_banner.jpg';
 
 // Animation keyframes
 const fadeIn = keyframes`
@@ -41,25 +43,13 @@ const fadeIn = keyframes`
 const ServicesContainer = styled.div`
   width: 100%;
   max-width: 100%;
-  margin-top: -80px;
+  margin-top: 0;
   overflow-x: hidden;
-`;
-
-const VideoBackground = styled.video`
-  position: absolute !important;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  z-index: -1;
-  filter: brightness(0.7) contrast(1.1);
 `;
 
 const HeroSection = styled.section`
   position: relative;
-  height: 75vh;
+  height: 550px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -69,6 +59,8 @@ const HeroSection = styled.section`
   padding: 0 20px;
   padding-top: 80px;
   overflow: hidden;
+  background: url(${servicesHeroBanner}) no-repeat center center;
+  background-size: cover;
 
   &::after {
     content: '';
@@ -92,6 +84,7 @@ const HeroTitle = styled.h1`
   margin-bottom: 30px;
   font-weight: 700;
   text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.7);
+  position: relative;
   z-index: 1;
 
   @media (max-width: 768px) {
@@ -99,7 +92,7 @@ const HeroTitle = styled.h1`
   }
 `;
 
-const Button = styled.a`
+const Button = styled.button`
   display: inline-block;
   padding: 15px 30px;
   background: ${props => props.primary ? '#e63946' : 'transparent'};
@@ -120,20 +113,19 @@ const Button = styled.a`
 
 const ServiceGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(350px, 1fr));
   gap: 30px;
   width: 100%;
-  max-width: 100%;
-  padding: 0 80px;
-  
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(2, 1fr);
-    padding: 0 40px;
+  max-width: 1600px;
+  padding: 0 20px;
+  margin-bottom: 60px;
+
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(2, minmax(350px, 1fr));
   }
-  
+
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    padding: 0 20px;
   }
 `;
 
@@ -152,6 +144,9 @@ const IntroSection = styled(Section)`
   text-align: center;
   padding: 80px 0;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const IntroText = styled.p`
@@ -367,9 +362,9 @@ const AirScrubberStepsSection = styled(Section)`
 const StepsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr); // 2x2 grid
-  gap: 40px;
+  gap: 30px; // Adjusted gap for balance
   max-width: 1000px; 
-  margin: 50px auto 0; 
+  margin: 50px auto;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr; // Stack on smaller screens
@@ -381,7 +376,7 @@ const StepCard = styled.div`
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 12px;
-  padding: 30px;
+  padding: 50px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
@@ -389,7 +384,8 @@ const StepCard = styled.div`
   align-items: center; 
   text-align: center; 
   transition: transform 0.3s ease;
-  height: 100%; // Ensure cards have equal height if content differs slightly
+  height: auto;
+  margin-bottom: 0;
 
   &:hover {
     transform: translateY(-8px);
@@ -421,20 +417,30 @@ const StepDescription = styled.p`
   flex-grow: 1; // Allow description to take remaining space
 `;
 
+// Add a new component for the button container
+const ScheduleButtonContainer = styled.div`
+  margin-top: 60px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+`;
+
 function Services() {
+  const navigate = useNavigate();
   const [introRef, introInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [airScrubberRef, airScrubberInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [airScrubberStepsRef, airScrubberStepsInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [landscapeRef, landscapeInView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
+  const navigateToContact = () => {
+    navigate('/#contact-form');
+  };
+
   return (
     <ServicesContainer>
       <HeroSection>
-        <VideoBackground autoPlay muted loop playsInline>
-          <source src="/videos/hero-background.mp4" type="video/mp4" />
-        </VideoBackground>
         <HeroTitle>Professional HVAC & Electrical Solutions</HeroTitle>
-        <Button primary href="/contact">Request a Quote</Button>
       </HeroSection>
 
       <LandscapeSection ref={landscapeRef} inView={landscapeInView}>
@@ -488,7 +494,7 @@ function Services() {
           </Highlight>
           <Button 
             primary 
-            href="/contact" 
+            onClick={navigateToContact}
             style={{ 
               fontSize: '1.1rem',
               padding: '15px 30px'
@@ -499,7 +505,7 @@ function Services() {
         </LandscapeContent>
       </LandscapeSection>
 
-      <IntroSection ref={introRef} inView={introInView}>
+      <IntroSection ref={introRef} inView={introInView} className="intro-section">
         <IntroText>
           X-treme Services consists of X-treme Heating & Air, and X-treme Electric.
         </IntroText>
@@ -540,14 +546,10 @@ function Services() {
           </ServiceCard>
         </ServiceGrid>
         
-        <div style={{ 
-          textAlign: 'center', 
-          marginTop: '40px',
-          width: '100%'
-        }}>
+        <ScheduleButtonContainer>
           <Button 
             primary 
-            href="/contact"
+            onClick={navigateToContact}
             style={{
               fontSize: '1.2rem',
               padding: '20px 40px'
@@ -555,7 +557,7 @@ function Services() {
           >
             Schedule Service
           </Button>
-        </div>
+        </ScheduleButtonContainer>
       </IntroSection>
 
       <AirScrubberSection ref={airScrubberRef} inView={airScrubberInView}>
@@ -632,7 +634,7 @@ function Services() {
         </Highlight>
 
         <div style={{ textAlign: 'center', marginTop: '40px' }}>
-          <Button primary href="/contact">
+          <Button primary onClick={navigateToContact}>
             Install Air Scrubber Today
           </Button>
         </div>

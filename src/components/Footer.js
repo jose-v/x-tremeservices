@@ -128,9 +128,9 @@ function Footer() {
           <FooterHeading>Quick Links</FooterHeading>
           <FooterLinks>
             <FooterLink to="/">Home</FooterLink>
-            <FooterLink to="/services">Services</FooterLink>
             <FooterLink to="/about">About</FooterLink>
-            <FooterLink to="/#contact">Contact</FooterLink>
+            <FooterLink to="/services">Services</FooterLink>
+            <FooterLink to="/news">News</FooterLink>
           </FooterLinks>
           <SocialIconsContainer>
             <SocialIcon href="https://facebook.com" target="_blank" rel="noopener noreferrer">
@@ -153,10 +153,14 @@ function Footer() {
         
         <FooterSection>
           <FooterHeading>Services</FooterHeading>
-          <FooterLink to="/services">Building Maintenance</FooterLink>
-          <FooterLink to="/services">Renovation</FooterLink>
-          <FooterLink to="/services">Construction</FooterLink>
-          <FooterLink to="/services">Consultation</FooterLink>
+          <FooterLink to="/services">HVAC Installation & Repair</FooterLink>
+          <FooterLink to="/services">Electrical Services</FooterLink>
+          <FooterLink to="/services">Indoor Air Quality (IAQ)</FooterLink>
+          <FooterLink to="/services">Air Scrubber Technology</FooterLink>
+          <FooterLink to="/services">Landscape Lighting Design</FooterLink>
+          <FooterLink to="/services">Panel Upgrades</FooterLink>
+          <FooterLink to="/services">Ceiling Fan Installation</FooterLink>
+          <FooterLink to="/services">Heating & Cooling</FooterLink>
         </FooterSection>
         
         <FooterSection>

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { FaSnowflake, FaBolt, FaShieldAlt, FaTools, FaQuoteLeft, FaQuoteRight, FaStar, FaPaperPlane, FaPhone } from 'react-icons/fa';
 import { useInView } from 'react-intersection-observer';
+import { scrollToSection } from '../components/Layout';
 
 // Import the images
 import heroBg from '../images/hero-bg.jpg';
@@ -68,16 +70,7 @@ const HeroSubtitle = styled.p`
   }
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  gap: 20px;
-  
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-`;
-
-const Button = styled.a`
+const Button = styled.button`
   display: inline-block;
   padding: 15px 30px;
   background: ${props => props.primary ? '#e63946' : 'transparent'};
@@ -219,7 +212,7 @@ const ServiceDescription = styled.p`
 `;
 
 const CTASection = styled.section`
-  padding: 160px 20px;
+  padding: 100px 20px;
   background: linear-gradient(rgba(29, 53, 87, 0.9), rgba(29, 53, 87, 0.9)), 
               url(${ctaBg}) no-repeat center center;
   background-size: cover;
@@ -244,31 +237,47 @@ const CTATitle = styled.h2`
   }
 `;
 
-const CTADescription = styled.p`
-  font-size: 1.2rem;
-  margin-bottom: 30px;
-  max-width: 800px;
-  line-height: 1.6;
-`;
-
 const CTAContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  gap: 100px;
   max-width: 1200px;
   margin: 0 auto;
-  align-items: center;
+  align-items: start;
+  padding: 0;
   
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
+    gap: 60px;
+    padding: 0 20px;
   }
 `;
 
 const CTAContentColumn = styled.div`
   text-align: left;
+  padding: 40px;
   
   @media (max-width: 992px) {
     text-align: center;
+    order: -1;
+    padding: 0;
+  }
+`;
+
+const CTADescription = styled.p`
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+  
+  @media (max-width: 992px) {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
   }
 `;
 
@@ -280,14 +289,24 @@ const ContactForm = styled.form`
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  padding: 30px;
+  padding: 40px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  width: 100%;
+
+  @media (max-width: 768px) {
+    padding: 30px 20px;
+  }
 `;
 
 const FormGroup = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  width: 100%;
+
+  &:last-of-type {
+    margin-bottom: 30px;
+  }
 `;
 
 const FormLabel = styled.label`
@@ -305,6 +324,7 @@ const FormInput = styled.input`
   background: rgba(255, 255, 255, 0.1);
   color: white;
   font-size: 1rem;
+  box-sizing: border-box;
   
   &::placeholder {
     color: rgba(255, 255, 255, 0.7);
@@ -327,6 +347,7 @@ const FormTextarea = styled.textarea`
   font-size: 1rem;
   min-height: 120px;
   resize: vertical;
+  box-sizing: border-box;
   
   &::placeholder {
     color: rgba(255, 255, 255, 0.7);
@@ -347,6 +368,11 @@ const FormSelect = styled.select`
   background: rgba(255, 255, 255, 0.1);
   color: white;
   font-size: 1rem;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
   
   &:focus {
     outline: none;
@@ -647,7 +673,15 @@ const StaffRole = styled.div`
   letter-spacing: 1px;
 `;
 
+const HeroContent = styled.div`
+  max-width: 800px;
+  padding: 20px;
+  position: relative;
+  z-index: 2;
+`;
+
 function Home() {
+  const navigate = useNavigate();
   // Set up form state
   const [formData, setFormData] = useState({
     name: '',
@@ -665,13 +699,24 @@ function Home() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${apiUrl}/api/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit form');
+      }
+
       setSubmitted(true);
       setFormData({
         name: '',
@@ -680,7 +725,30 @@ function Home() {
         service: '',
         message: ''
       });
-    }, 1500);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('There was an error submitting the form. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const scrollToContact = () => {
+    scrollToSection('contact-form');
+  };
+
+  const navigateToServicesIntro = () => {
+    navigate('/services');
+    setTimeout(() => {
+      const introSection = document.querySelector('.intro-section');
+      if (introSection) {
+        const topOffset = introSection.getBoundingClientRect().top + window.pageYOffset;
+        window.scrollTo({
+          top: topOffset - 150,
+          behavior: 'smooth'
+        });
+      }
+    }, 400);
   };
 
   // Set up the intersection observers for each section
@@ -702,15 +770,11 @@ function Home() {
   return (
     <HomeContainer>
       <HeroSection>
-        <HeroTitle>Your One-Stop Solution for HVAC & Electrical Services</HeroTitle>
-        <HeroSubtitle>
-          X-treme Services provides top-quality heating, cooling, and electrical solutions 
-          for residential and commercial clients
-        </HeroSubtitle>
-        <ButtonContainer>
-          <Button primary href="/services">Our Services</Button>
-          <Button href="/contact">Contact Us</Button>
-        </ButtonContainer>
+        <HeroContent>
+          <HeroTitle>Welcome to X-Treme Services</HeroTitle>
+          <HeroSubtitle>Your trusted partner in professional cleaning and maintenance services</HeroSubtitle>
+          <Button onClick={scrollToContact}>Get Started</Button>
+        </HeroContent>
       </HeroSection>
 
       <AnimatedSection 
@@ -806,7 +870,7 @@ function Home() {
                 your heating and cooling needs, including furnaces, air conditioners, heat pumps, 
                 and indoor air quality solutions.
               </ServiceDescription>
-              <Button primary href="/services">Learn More</Button>
+              <Button primary onClick={navigateToServicesIntro}>Learn More</Button>
             </ServiceContent>
           </ServiceCard>
           
@@ -819,7 +883,7 @@ function Home() {
                 and commercial clients, including panel upgrades, lighting installation, 
                 electrical repairs, and safety inspections.
               </ServiceDescription>
-              <Button href="/services" style={{color: 'white', borderColor: 'white'}}>Learn More</Button>
+              <Button onClick={navigateToServicesIntro} style={{color: 'white', borderColor: 'white'}}>Learn More</Button>
             </ServiceContent>
           </ServiceCard>
         </ServicesGrid>

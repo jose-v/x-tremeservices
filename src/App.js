@@ -1,5 +1,5 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import GlobalStyle from './styles/GlobalStyle';
 import Navbar from './components/Navbar';
@@ -7,13 +7,10 @@ import Footer from './components/Footer';
 
 const theme = {
   colors: {
-    primary: '#2D2D2D',
-    secondary: '#F5F5F5',
-    accent: '#000000',
-    background: '#FFFFFF',
+    background: '#ffffff',
+    primary: '#000000',
   },
   fonts: {
-    heading: "'Poppins', sans-serif",
     body: "'Inter', sans-serif",
   },
 };
@@ -31,6 +28,19 @@ const MainContent = styled.main`
 `;
 
 function App() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    // Disable browser's default scroll restoration
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    // Force scroll to top on pathname change
+    document.documentElement.scrollTo(0, 0);
+    document.body.scrollTo(0, 0);
+  }, [pathname]); // Only run on pathname changes
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />

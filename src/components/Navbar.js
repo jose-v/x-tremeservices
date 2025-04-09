@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { scrollToSection } from './Layout';
 import logo from '../images/logo.png'; // Adjust the path as needed
 
 const Nav = styled.nav`
-  background: rgba(255, 255, 255, 0.1); /* Changed to a more transparent white */
+  background: rgba(255, 255, 255, 0.6); /* Adjusted opacity */
   backdrop-filter: blur(10px); /* Glassmorphic blur effect */
   -webkit-backdrop-filter: blur(10px); /* For Safari support */
   padding: 0 2rem;
@@ -74,6 +75,23 @@ const NavLinkStyled = styled(NavLink)`
   }
 `;
 
+const ContactButton = styled.button`
+  color: #000000;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  
+  &:hover {
+    color: #e63946;
+  }
+`;
+
 const PhoneNumber = styled.a`  background-color: #e63946;
   color: white;
   font-weight: 600;
@@ -97,28 +115,27 @@ const PhoneNumber = styled.a`  background-color: #e63946;
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [shouldScrollToContact, setShouldScrollToContact] = useState(false);
 
-  const scrollToContact = (e) => {
-    e.preventDefault();
-    
-    // Check if we are already on the homepage
-    if (location.pathname === '/') {
-      const contactSection = document.getElementById('contact-form');
-      if (contactSection) {
-        contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        // Add a small delay to adjust for the navbar height
-        setTimeout(() => {
-          window.scrollBy(0, -150); // Adjust for navbar height
-        }, 100); // Delay might need adjustment based on scroll speed
-      }
+  const scrollToContact = useCallback(() => {
+    const isHome = location.pathname === '/';
+    if (!isHome) {
+      setShouldScrollToContact(true);
+      navigate('/');
     } else {
-      // If not on the homepage, navigate there first with the hash
-      navigate('/#contact-form');
-      // Scroll might not happen automatically after navigation, 
-      // needs handling on the Home page potentially or a different approach.
-      // For now, this navigates to the homepage hash.
+      scrollToSection('contact-form');
     }
-  };
+  }, [navigate, location.pathname]);
+
+  useEffect(() => {
+    if (shouldScrollToContact) {
+      // Wait for page transition and content to load
+      setTimeout(() => {
+        scrollToSection('contact-form');
+        setShouldScrollToContact(false); // Reset the state
+      }, 400); // Match the transition duration
+    }
+  }, [shouldScrollToContact]);
 
   return (
     <Nav>
@@ -128,19 +145,19 @@ const Navbar = () => {
         </Logo>
         <NavMenu>
           <NavItem>
+            <NavLinkStyled to="/">Home</NavLinkStyled>
+          </NavItem>
+          <NavItem>
             <NavLinkStyled to="/about">About</NavLinkStyled>
           </NavItem>
           <NavItem>
             <NavLinkStyled to="/services">Services</NavLinkStyled>
           </NavItem>
           <NavItem>
-            <NavLinkStyled to="/projects">Projects</NavLinkStyled>
-          </NavItem>
-          <NavItem>
             <NavLinkStyled to="/news">News</NavLinkStyled>
           </NavItem>
           <NavItem>
-            <NavLinkStyled as="a" href="#contact-form" onClick={scrollToContact}>Contact</NavLinkStyled>
+            <ContactButton onClick={scrollToContact}>Contact</ContactButton>
           </NavItem>
           <NavItem>
             <PhoneNumber href="tel:3368510050">Call Us: (336) 851-0050</PhoneNumber>

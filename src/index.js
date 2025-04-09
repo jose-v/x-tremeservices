@@ -5,51 +5,81 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import './index.css';
-import App from './App'; // App will act as the layout
+import Layout from './components/Layout';
 import Home from './pages/Home';
 import About from './pages/About';
 import Services from './pages/Services';
 import Projects from './pages/Projects';
 import News from './pages/News';
+import ErrorBoundary from './components/ErrorBoundary';
 import reportWebVitals from './reportWebVitals';
+import NProgress from 'nprogress';
 
-// Define routes using the data router format
+// Custom router that shows loading indicator
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />, // App is the root layout component
+    element: <Layout />,
+    errorElement: <ErrorBoundary />,
     children: [
       {
-        index: true, // Render Home at the root path
+        index: true,
         element: <Home />,
+        loader: async () => {
+          NProgress.start();
+          await new Promise(resolve => setTimeout(resolve, 300)); // Minimum delay for smooth transition
+          NProgress.done();
+          return null;
+        },
       },
       {
         path: "about",
         element: <About />,
+        loader: async () => {
+          NProgress.start();
+          await new Promise(resolve => setTimeout(resolve, 300));
+          NProgress.done();
+          return null;
+        },
       },
       {
         path: "services",
         element: <Services />,
+        loader: async () => {
+          NProgress.start();
+          await new Promise(resolve => setTimeout(resolve, 300));
+          NProgress.done();
+          return null;
+        },
       },
       {
         path: "projects",
         element: <Projects />,
+        loader: async () => {
+          NProgress.start();
+          await new Promise(resolve => setTimeout(resolve, 300));
+          NProgress.done();
+          return null;
+        },
       },
       {
         path: "news",
         element: <News />,
+        loader: async () => {
+          NProgress.start();
+          await new Promise(resolve => setTimeout(resolve, 300));
+          NProgress.done();
+          return null;
+        },
       },
-      // Note: No separate /contact route needed
     ],
-    // Error boundary could be added here later if needed
-    // errorElement: <ErrorPage />,
   },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} /> {/* Use RouterProvider */}
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 
