@@ -6,7 +6,9 @@ const nodemailer = require('nodemailer');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'https://x-tremeservices.netlify.app', // Your Netlify domain
+}));
 app.use(express.json());
 
 // Create a transporter using Gmail
