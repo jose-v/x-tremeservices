@@ -27,7 +27,6 @@ const fadeIn = keyframes`
 const HomeContainer = styled.div`
   width: 100%;
   max-width: 100%;
-  margin-top: -150px; /* Move the entire container up to compensate for navbar */
   padding: 0;
   overflow-x: hidden; /* Prevent horizontal scrolling */
 `;
@@ -42,11 +41,9 @@ const HeroSection = styled.section`
   align-items: center;
   text-align: center;
   color: white;
-  padding: 0 20px;
   position: relative;
   width: 100%;
-  margin: 0;
-  padding-top: 50px; /* Add some padding at top */
+  padding: 0;
 `;
 
 const HeroTitle = styled.h1`
@@ -222,7 +219,7 @@ const ServiceDescription = styled.p`
 `;
 
 const CTASection = styled.section`
-  padding: 80px 20px;
+  padding: 160px 20px;
   background: linear-gradient(rgba(29, 53, 87, 0.9), rgba(29, 53, 87, 0.9)), 
               url(${ctaBg}) no-repeat center center;
   background-size: cover;
@@ -828,7 +825,7 @@ function Home() {
         </ServicesGrid>
       </AnimatedSection>
 
-      <CTASection>
+      <CTASection id="contact-form">
         <CTATitle>Ready to Get Started?</CTATitle>
         <CTAContainer>
           <CTAFormColumn>
@@ -1021,10 +1018,6 @@ function Home() {
           </StaffGrid>
         </StaffContainer>
       </StaffSection>
-
-      <Section id="contact-form">
-        {/* Contact form content */}
-      </Section>
     </HomeContainer>
   );
 }

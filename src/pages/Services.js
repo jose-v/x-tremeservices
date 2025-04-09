@@ -9,11 +9,14 @@ import {
   FaThermometerHalf,
   FaHome,
   FaCheckCircle,
-  FaLightbulb
+  FaLightbulb,
+  FaTools,
+  FaAtom,
+  FaWind
 } from 'react-icons/fa';
 
-// Import your images (you'll need to add these to your project)
-import servicesBg from '../images/services_hero_banner.jpg';
+// Remove unused import
+// import servicesBg from '../images/services_hero_banner.jpg';
 import electricalImg from '../images/electrical_services.jpg';
 import hvacImg from '../images/hvac_services.jpg';
 import iaqImg from '../images/iaq_services.jpg';
@@ -42,19 +45,18 @@ const ServicesContainer = styled.div`
   overflow-x: hidden;
 `;
 
-// Add a new styled component for the video background
 const VideoBackground = styled.video`
-  position: absolute;
+  position: absolute !important;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top center;
+  object-position: center;
   z-index: -1;
+  filter: brightness(0.7) contrast(1.1);
 `;
 
-// Update the HeroSection component
 const HeroSection = styled.section`
   position: relative;
   height: 75vh;
@@ -75,8 +77,13 @@ const HeroSection = styled.section`
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(29, 53, 87, 0.6); // Overlay to ensure text readability
-    z-index: -1;
+    background: rgba(29, 53, 87, 0.4); /* Blue overlay */
+    z-index: 0;
+  }
+
+  & > * {
+    position: relative;
+    z-index: 1;
   }
 `;
 
@@ -85,6 +92,7 @@ const HeroTitle = styled.h1`
   margin-bottom: 30px;
   font-weight: 700;
   text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.7);
+  z-index: 1;
 
   @media (max-width: 768px) {
     font-size: 2.8rem;
@@ -350,24 +358,86 @@ const ImageGrid = styled.div`
   }
 `;
 
+// Add new styled components for Air Scrubber Steps
+const AirScrubberStepsSection = styled(Section)`
+  background-color: #eaf4ff; // Light blue background
+  padding: 80px 20px;
+`;
+
+const StepsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); // 2x2 grid
+  gap: 40px;
+  max-width: 1000px; 
+  margin: 50px auto 0; 
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr; // Stack on smaller screens
+  }
+`;
+
+const StepCard = styled.div`
+  background: rgba(255, 255, 255, 0.7); 
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  text-align: center; 
+  transition: transform 0.3s ease;
+  height: 100%; // Ensure cards have equal height if content differs slightly
+
+  &:hover {
+    transform: translateY(-8px);
+  }
+`;
+
+const StepIconWrapper = styled.div`
+  font-size: 3rem; 
+  color: #1d3557; 
+  margin-bottom: 25px;
+  height: 60px; // Give icon wrapper fixed height
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StepTitle = styled.h3`
+  font-size: 1.4rem; 
+  color: #1d3557;
+  margin-bottom: 15px;
+  font-weight: 600;
+  min-height: 50px; // Give title area minimum height
+`;
+
+const StepDescription = styled.p`
+  color: #4a4a4a; 
+  line-height: 1.7;
+  font-size: 1rem;
+  flex-grow: 1; // Allow description to take remaining space
+`;
+
 function Services() {
   const [introRef, introInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [airScrubberRef, airScrubberInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [airScrubberStepsRef, airScrubberStepsInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [landscapeRef, landscapeInView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
   return (
     <ServicesContainer>
       <HeroSection>
         <VideoBackground autoPlay muted loop playsInline>
           <source src="/videos/hero-background.mp4" type="video/mp4" />
-          <source src="/videos/hero-background.webm" type="video/webm" />
-          {/* Fallback background image if video fails to load */}
-          <img src={servicesBg} alt="Services Background" />
         </VideoBackground>
         <HeroTitle>Professional HVAC & Electrical Solutions</HeroTitle>
         <Button primary href="/contact">Request a Quote</Button>
       </HeroSection>
 
-      <LandscapeSection>
+      <LandscapeSection ref={landscapeRef} inView={landscapeInView}>
         <LandscapeContent>
           <ServiceIcon style={{ color: '#37F722', fontSize: '3rem', marginBottom: '30px' }}>
             <FaLightbulb />
@@ -567,6 +637,56 @@ function Services() {
           </Button>
         </div>
       </AirScrubberSection>
+
+      <AirScrubberStepsSection ref={airScrubberStepsRef} inView={airScrubberStepsInView} id="air-scrubber-steps">
+        <h2 style={{ textAlign: 'center', fontSize: '2.5rem', color: '#1d3557', marginBottom: '60px', position: 'relative' }}>
+          How INDUCT 2000 "AIR SCRUBBER" Technology Works
+          <span style={{
+              content: '""',
+              position: 'absolute',
+              bottom: '-15px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '100px',
+              height: '4px',
+              background: '#e63946'
+            }}></span>
+        </h2>
+        <StepsGrid>
+          <StepCard>
+            <StepIconWrapper><FaTools /></StepIconWrapper>
+            <StepTitle>1. Installed in the HVAC system</StepTitle>
+            <StepDescription>
+              The Air Scrubber is mounted in the duct-work of an HVAC system.
+            </StepDescription>
+          </StepCard>
+
+          <StepCard>
+            <StepIconWrapper><FaLightbulb /></StepIconWrapper>
+            <StepTitle>2. UV-C light shines on titanium-dioxide-coated surface</StepTitle>
+            <StepDescription>
+              A UV-C germicidal bulb illuminates a special catalytic target.
+            </StepDescription>
+          </StepCard>
+
+          <StepCard>
+            <StepIconWrapper><FaAtom /></StepIconWrapper>
+            <StepTitle>3. 'ActivePure' molecules are created</StepTitle>
+            <StepDescription>
+              UV-C light and the catalytic surface produce powerful oxidizers.
+            </StepDescription>
+          </StepCard>
+
+          <StepCard>
+            <StepIconWrapper><FaWind /></StepIconWrapper>
+            <StepTitle>4. Oxidizers purify the air</StepTitle>
+            <StepDescription>
+              The oxidizers are released into the air, reducing contaminants.
+            </StepDescription>
+          </StepCard>
+        </StepsGrid>
+      </AirScrubberStepsSection>
+      
     </ServicesContainer>
   );
 }

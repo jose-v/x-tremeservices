@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import NavLink from './NavLink';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../images/logo.png'; // Adjust the path as needed
 
 const Nav = styled.nav`
@@ -46,7 +45,7 @@ const LogoImage = styled.img`
 const NavMenu = styled.div`
   display: flex;
   align-items: center;
-  gap: 2rem; // Add consistent gap between items
+  gap: 1.25rem; // Reduced gap between items by ~20px
   
   @media screen and (max-width: 768px) {
     display: none;
@@ -58,26 +57,24 @@ const NavItem = styled.li`
 `;
 
 const NavLinkStyled = styled(NavLink)`
-  color: #000000 !important; /* Force black text with !important */
-  margin-left: 3.5rem; /* Increased spacing between items */
+  color: #000000 !important;
   text-decoration: none;
   font-weight: 500;
   font-size: 1.1rem;
   transition: all 0.3s ease;
   
   &:hover {
-    color: #e63946 !important; /* Red color on hover with !important */
+    color: #e63946 !important;
   }
   
   &.active {
-    color: #000000 !important; /* Black for active state */
-    font-weight: 700; /* Make active link bold */
-    border-bottom: 2px solid #000000; /* Underline active link */
+    color: #000000 !important;
+    font-weight: 700;
+    border-bottom: 2px solid #000000;
   }
 `;
 
-const PhoneNumber = styled.a`
-  background-color: #e63946;
+const PhoneNumber = styled.a`  background-color: #e63946;
   color: white;
   font-weight: 600;
   font-size: 1rem;
@@ -98,13 +95,28 @@ const PhoneNumber = styled.a`
 `;
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const scrollToContact = (e) => {
     e.preventDefault();
-    const contactSection = document.getElementById('contact-form');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
+    
+    // Check if we are already on the homepage
+    if (location.pathname === '/') {
+      const contactSection = document.getElementById('contact-form');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Add a small delay to adjust for the navbar height
+        setTimeout(() => {
+          window.scrollBy(0, -150); // Adjust for navbar height
+        }, 100); // Delay might need adjustment based on scroll speed
+      }
     } else {
-      window.location.href = '/#contact-form';
+      // If not on the homepage, navigate there first with the hash
+      navigate('/#contact-form');
+      // Scroll might not happen automatically after navigation, 
+      // needs handling on the Home page potentially or a different approach.
+      // For now, this navigates to the homepage hash.
     }
   };
 
@@ -140,5 +152,6 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
 
 
