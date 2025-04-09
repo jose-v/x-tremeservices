@@ -704,8 +704,8 @@ function Home() {
     setIsSubmitting(true);
     
     try {
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001';
-      const response = await fetch(`${apiUrl}/api/contact`, {
+      const apiUrl = process.env.REACT_APP_API_URL || 'https://x-tremeservices.netlify.app/.netlify/functions/api';
+      const response = await fetch(`${apiUrl}/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
